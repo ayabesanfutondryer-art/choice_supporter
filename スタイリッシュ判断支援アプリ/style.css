@@ -1,609 +1,451 @@
+/* CSS Variables */
 :root {
-    --p5-red: #3399FF;
-    /* Changed to Blue as requested, variable name kept for compatibility */
-    --p5-black: #000000;
-    --p5-white: #FFFFFF;
-    --p5-grey: #333333;
-    --font-main: 'Noto Sans JP', sans-serif;
-    --skew-deg: -5deg;
+    --bg-color: #121214;
+    --text-color: #e0e6ed;
+    --accent-color: #00f0ff;
+    /* Cyan */
+    --secondary-color: #ff0055;
+    /* Magenta/Red accent */
+    --panel-bg: rgba(255, 255, 255, 0.05);
+    --font-main: 'Zen Kaku Gothic New', sans-serif;
+    --font-display: 'Share Tech Mono', monospace;
+
+    --meter-h: 8px;
+    --app-width: 390px;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased;
 }
 
 body {
+    background-color: #000;
+    color: var(--text-color);
     font-family: var(--font-main);
-    background-color: var(--p5-black);
-    color: var(--p5-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     overflow: hidden;
-    /* Prevent scroll on mobile */
-    height: 100vh;
-    width: 100vw;
+    /* Prevent scrolling on cut-in */
 }
 
 #app {
-    position: relative;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-/* --- Dynamic Background --- */
-.bg-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background:
-        repeating-linear-gradient(45deg,
-            #1a1a1a,
-            #1a1a1a 10px,
-            #222 10px,
-            #222 20px);
-    z-index: 0;
-    opacity: 0.3;
-}
-
-.bg-shape {
-    position: absolute;
-    background: var(--p5-red);
-    z-index: 0;
-    opacity: 0.8;
-}
-
-.bg-shape.shape-1 {
-    width: 200vw;
-    height: 50vh;
-    top: -20%;
-    left: -50%;
-    transform: rotate(15deg);
-    clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-}
-
-.bg-shape.shape-2 {
-    width: 150vw;
-    height: 40vh;
-    bottom: -10%;
-    right: -20%;
-    background: white;
-    transform: rotate(-10deg);
-    clip-path: polygon(0 20%, 100% 0, 100% 100%, 0 100%);
-}
-
-.bg-shape.shape-3 {
-    width: 50vw;
+    max-width: var(--app-width);
     height: 100vh;
-    top: 0;
-    right: 10%;
-    background: var(--p5-red);
-    clip-path: polygon(20% 0, 100% 0, 80% 100%, 0% 100%);
-    opacity: 0.5;
-    mix-blend-mode: multiply;
+    /* Mobile full height */
+    max-height: 844px;
+    /* iPhone aspectish */
+    background-color: var(--bg-color);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
 }
 
-/* --- Layout Containers --- */
-.main-container {
-    position: relative;
-    z-index: 10;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Utilities */
+.hidden {
+    display: none !important;
 }
 
 .screen {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: none;
-    /* Managed by JS */
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-}
-
-.screen.active {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 1;
-    pointer-events: auto;
+    padding: 20px 20px 0 20px;
+    /* Remove bottom padding to allow full usage */
+    animation: fadeIn 0.4s ease-out;
 }
 
-.content-wrapper {
-    width: 90%;
-    max-width: 500px;
-    padding: 2rem;
-    position: relative;
-    /* Basic perspective transform for that 'floating' feel */
-    transform: perspective(1000px) rotateY(5deg);
-}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 
-
-
-/* --- Typography & Decor --- */
-h1.app-title {
-    font-size: 4rem;
-    line-height: 0.9;
-    font-style: italic;
-    transform: rotate(-5deg);
-    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
-    color: var(--p5-white);
-    margin-bottom: 1rem;
-}
-
-.app-title-top {
-    font-size: 5rem;
-    font-weight: 900;
-    font-style: italic;
-    color: var(--p5-white);
-    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%) rotate(-5deg);
-    z-index: 20;
-    margin: 0;
-}
-
-.header-area-bottom {
-    margin-top: 8rem;
-}
-
-.app-title-bottom {
-    font-size: 4rem;
-    font-weight: 900;
-    font-style: italic;
-    color: var(--p5-red);
-    background: var(--p5-black);
-    padding: 10px 30px;
-    display: inline-block;
-    transform: skewX(-15deg) rotate(-3deg);
-    text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1rem;
-}
-
-h1.app-title .highlight {
-    background-color: var(--p5-black);
-    color: var(--p5-red);
-    padding: 0 10px;
-}
-
-.app-subtitle {
-    font-size: 1.2rem;
-    background: var(--p5-black);
-    color: var(--p5-white);
-    display: inline-block;
-    padding: 5px 15px;
-    transform: skewX(-20deg);
-    letter-spacing: 2px;
-}
-
-.title-decor {
-    font-size: 0.8rem;
-    color: var(--p5-black);
-    background: var(--p5-white);
-    display: inline-block;
-    padding: 2px 8px;
-    transform: rotate(5deg);
-    margin-bottom: 10px;
-    font-weight: 900;
-}
-
-/* --- Character Area --- */
-.char-wrapper {
-    position: relative;
-    margin: 2rem 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.char-visual {
-    font-size: 5rem;
-    z-index: 2;
-    filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.5));
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-
-    0%,
-    100% {
+    to {
+        opacity: 1;
         transform: translateY(0);
     }
-
-    50% {
-        transform: translateY(-10px);
-    }
 }
 
-.char-label.badge {
-    position: absolute;
-    bottom: -10px;
-    right: 10%;
-    background: var(--p5-black);
-    color: var(--p5-red);
-    padding: 5px 15px;
-    font-size: 1rem;
-    transform: skewX(-20deg) rotate(-5deg);
-    border: 2px solid var(--p5-white);
-    box-shadow: 3px 3px 0 var(--p5-red);
-    z-index: 3;
+/* Header */
+.app-header {
+    padding: 15px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* --- Buttons (Phantom Style) --- */
+.app-header h1 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+/* Common UI Elements */
 .btn {
     border: none;
+    outline: none;
     cursor: pointer;
     font-family: var(--font-main);
-    font-weight: 900;
+    font-weight: 700;
+    padding: 15px 30px;
+    border-radius: 4px;
+    transition: all 0.2s;
     text-transform: uppercase;
+    letter-spacing: 1px;
     position: relative;
-    transition: transform 0.1s;
-    outline: none;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.btn:active {
-    transform: scale(0.95);
-}
-
-.btn-phantom {
-    background: var(--p5-black);
-    color: var(--p5-white);
-    font-size: 1.5rem;
-    padding: 15px 40px;
-    transform: skewX(-20deg);
-    border: 2px solid var(--p5-white);
     overflow: hidden;
-    position: relative;
-    box-shadow: 5px 5px 0px var(--p5-red);
 }
 
-.btn-phantom span {
-    display: block;
-    transform: skewX(20deg);
-    /* Counter skew text */
+.btn-primary {
+    background: var(--accent-color);
+    color: #000;
+    box-shadow: 0 4px 0 rgba(0, 150, 160, 1);
 }
 
-/* Hover effect slice */
-.btn-phantom::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--p5-red);
-    transform: skewX(20deg);
-    transition: left 0.3s;
-    z-index: 0;
+.btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0, 150, 160, 1);
 }
 
-.btn-phantom:hover::before {
-    left: 0;
-}
-
-.btn-phantom span {
-    position: relative;
-    z-index: 1;
-}
-
-/* Quiz Specifics */
-.question-frame {
-    background: var(--p5-white);
-    padding: 2rem;
-    transform: rotate(2deg);
-    box-shadow: 10px 10px 0px var(--p5-black);
-    border: 4px solid var(--p5-black);
-    margin-bottom: 2rem;
-    position: relative;
-}
-
-.question-frame::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: 30px;
-    height: 30px;
-    background: var(--p5-red);
-    clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-.question-text {
-    font-size: 1.5rem;
-    color: var(--p5-black);
-    transform: rotate(-2deg);
-    /* Counter */
-    line-height: 1.4;
-}
-
-.status-bar {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    font-weight: 900;
-}
-
-.level-indicator,
-.progress-indicator {
-    background: var(--p5-black);
-    color: var(--p5-white);
-    padding: 5px 15px;
-    transform: skewX(-15deg);
-}
-
-.level-indicator span,
-.progress-indicator span {
-    display: inline-block;
-    transform: skewX(15deg);
-}
-
-.action-area.vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
+.btn-secondary {
+    background: transparent;
+    border: 2px solid var(--text-color);
+    color: var(--text-color);
 }
 
 .btn-option {
-    background: var(--p5-white);
-    color: var(--p5-black);
+    width: 100%;
+    margin-bottom: 10px;
+    background: var(--panel-bg);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 20px;
     font-size: 1.2rem;
-    padding: 15px;
-    transform: skewX(-10deg);
-    border: 3px solid var(--p5-black);
-    text-align: left;
-    padding-left: 2rem;
-    transition: all 0.2s;
 }
 
 .btn-option:hover {
-    background: var(--p5-black);
-    color: var(--p5-red);
-    transform: skewX(-10deg) translateX(10px);
+    border-color: var(--accent-color);
+    background: rgba(0, 240, 255, 0.1);
 }
 
-.btn-option span {
-    display: block;
-    transform: skewX(10deg);
+.btn-text {
+    background: transparent;
+    color: var(--accent-color);
+    text-decoration: underline;
 }
 
-/* Result Specifics */
-.result-title {
-    font-size: 2.5rem;
-    color: var(--p5-white);
-    background: var(--p5-red);
-    padding: 10px 30px;
-    transform: skewX(-10deg) rotate(-3deg);
-    box-shadow: 5px 5px 0 var(--p5-white);
-    margin-bottom: 1rem;
-}
-
-.message-box {
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid var(--p5-white);
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    transform: skewX(-5deg);
-}
-
-.result-message {
-    color: var(--p5-white);
-    font-size: 1.1rem;
-    line-height: 1.6;
-    transform: skewX(5deg);
-}
-
-.result-message-main {
-    color: var(--p5-white);
-    font-size: 1.8rem;
-    font-weight: 900;
-    line-height: 1.6;
-    transform: skewX(5deg);
-    text-align: center;
-}
-
-.highlight-bracket {
-    color: var(--p5-red);
-    font-size: 2rem;
-    font-weight: 900;
-}
-
-.btn-group {
+/* Home Screen */
+#screen-home .home-content {
+    flex: 1;
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.btn-phantom.red {
-    background: var(--p5-red);
-    border-color: var(--p5-black);
-}
-
-.btn-phantom.black {
-    background: var(--p5-black);
-}
-
-.confirm-msg {
-    color: var(--p5-white);
-    font-size: 1.5rem;
-    font-weight: 900;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 0 var(--p5-black);
-    transform: skewX(-5deg);
 }
 
-/* --- Cut-in Overlay --- */
-.cutin-overlay {
-    position: fixed;
+.sub-copy {
+    font-weight: 400;
+    font-size: 1rem;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.hero-decoration {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle-outer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px dashed var(--accent-color);
+    border-radius: 50%;
+    animation: spin 10s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Quiz Screen */
+.quiz-header {
+    margin-bottom: 20px;
+}
+
+.calmness-meter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    margin-bottom: 10px;
+}
+
+.meter-bar {
+    flex: 1;
+    height: var(--meter-h);
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00f0ff, #0055ff);
+    transition: width 0.5s ease-out;
+}
+
+.question-counter {
+    text-align: right;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.character-area {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    min-height: 200px;
+    /* Ensure space is reserved for the character */
+    padding: 10px 0;
+}
+
+.quiz-interaction {
+    margin-top: auto;
+    /* Push to bottom */
+    width: 100%;
+    padding-bottom: 20px;
+    /* Safe area from bottom edge */
+    background: linear-gradient(to top, var(--bg-color) 0%, transparent 100%);
+    /* Optional: fade if needed, but clean is better */
+}
+
+.bubble {
+    background: var(--panel-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent-color);
+    padding: 20px;
+    border-radius: 0 10px 10px 10px;
+    margin-bottom: 20px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+/* Character CSS Art */
+.character {
+    width: 100%;
+
+    /* Remove height: 100% and rely on min-height + flex stretch from parent */
+    /* Wait, parent has align-items: center so it won't stretch height unless we say so */
+    /* Fixed min-height for the character itself so it's never 0 */
+    min-height: 200px;
+    /* Reduced from 300px to allow more space for buttons on small screens */
+    height: auto;
+    /* Allow it to grow if needed or constrained by width aspect */
+
+    /* Re-add max-width to keep it reasonable */
+    max-width: 380px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    position: relative;
+    transition: all 0.5s ease;
+
+    /* Breathing Animation */
+    --scale-base: 1;
+    animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        transform: scale(var(--scale-base));
+    }
+
+    50% {
+        transform: scale(calc(var(--scale-base) * 1.05));
+    }
+}
+
+.character .char-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transition: all 0.5s;
+}
+
+.character .char-accessory {
+    position: absolute;
+    transition: all 0.5s;
+}
+
+/* Stage 1: Image */
+.character.stage-1 {
+    background-image: url('images/ai1.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.character.stage-1 .char-body,
+.character.stage-1 .char-accessory {
+    display: none;
+}
+
+/* Stage 2: Image */
+.character.stage-2 {
+    background-image: url('images/ai2.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.character.stage-2 .char-body,
+.character.stage-2 .char-accessory {
+    display: none;
+}
+
+/* Stage 3: Image */
+.character.stage-3 {
+    width: 100%;
+    height: 100%;
+    max-width: 380px;
+    max-height: 380px;
+    background-image: url('images/ai3.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.character.stage-3 .char-body,
+.character.stage-3 .char-accessory {
+    display: none;
+}
+
+/* Cut-in Screen */
+#screen-cutin {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 100;
-    display: flex;
-    /* Always display but hidden visually */
+    background: rgba(0, 0, 0, 0.9);
     justify-content: center;
     align-items: center;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.1s;
-    background: rgba(51, 153, 255, 0.9);
-    /* Blue overlay */
-    overflow: hidden;
-}
-
-.cutin-overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.cutin-content {
-    position: relative;
-    transform: scale(0) rotate(-10deg);
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.cutin-overlay.active .cutin-content {
-    transform: scale(1.5) rotate(0deg);
-}
-
-.cutin-visual {
-    font-size: 8rem;
-    text-shadow: 10px 10px 0 var(--p5-black);
-    animation: shake 0.5s infinite;
+    text-align: center;
 }
 
 .cutin-text {
-    font-size: 4rem;
-    color: var(--p5-white);
-    -webkit-text-stroke: 2px var(--p5-black);
-    font-style: italic;
-    font-weight: 900;
-    position: absolute;
-    bottom: -20px;
-    right: -20px;
-    background: var(--p5-black);
-    padding: 5px 20px;
-    transform: rotate(-5deg);
+    font-family: var(--font-display);
+    font-size: 3rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 20px var(--accent-color);
+    transform: scale(0);
+    animation: cutinText 1.0s forwards;
 }
 
-.cutin-stripes {
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: repeating-linear-gradient(45deg,
-            transparent,
-            transparent 50px,
-            rgba(0, 0, 0, 0.2) 50px,
-            rgba(0, 0, 0, 0.2) 100px);
-    animation: moveStripes 1s linear infinite;
-    top: -50%;
-    left: -50%;
-}
-
-@keyframes moveStripes {
+@keyframes cutinText {
     0% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(50px);
-    }
-}
-
-@keyframes shake {
-    0% {
-        transform: translate(1px, 1px) rotate(0deg);
-    }
-
-    10% {
-        transform: translate(-1px, -2px) rotate(-1deg);
-    }
-
-    20% {
-        transform: translate(-3px, 0px) rotate(1deg);
-    }
-
-    30% {
-        transform: translate(3px, 2px) rotate(0deg);
-    }
-
-    40% {
-        transform: translate(1px, -1px) rotate(1deg);
+        transform: scale(0) rotate(-10deg);
+        opacity: 0;
     }
 
     50% {
-        transform: translate(-1px, 2px) rotate(-1deg);
-    }
-
-    60% {
-        transform: translate(-3px, 1px) rotate(0deg);
-    }
-
-    70% {
-        transform: translate(3px, 1px) rotate(-1deg);
-    }
-
-    80% {
-        transform: translate(-1px, -1px) rotate(1deg);
-    }
-
-    90% {
-        transform: translate(1px, 2px) rotate(0deg);
+        transform: scale(1.2) rotate(0deg);
+        opacity: 1;
     }
 
     100% {
-        transform: translate(1px, -2px) rotate(-1deg);
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
     }
 }
 
-/* Toast */
-.toast {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--p5-black);
-    color: var(--p5-white);
-    padding: 10px 30px;
-    border: 2px solid var(--p5-red);
-    font-weight: bold;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Final Screen */
+#screen-final .final-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Changed from space-around for better control */
+    gap: 40px;
+    /* Explicit gap */
+    padding-bottom: 40px;
+    padding-top: 40px;
+}
+
+.character-area.large {
+    flex: 0 0 auto;
+    /* Don't stretch indefinitely, be sized by content */
+    margin-bottom: 20px;
+    /* Account for scale(1.5) of 100px element: needs +25px space on sides if tight, but here mostly vertical matters */
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.character-area.large .character {
+    --scale-base: 1.5;
+    /* transform: scale(1.5); handled by animation using var */
+    /* Ensure it doesn't overlap due to transform */
+}
+
+.final-message {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    z-index: 10;
+    /* Ensure text is above if anything still touches */
+}
+
+.final-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+
+/* Result Overlay */
+#screen-result {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 20, 40, 0.95);
     z-index: 200;
-    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
-}
-
-.toast.show {
-    transform: translateX(-50%) translateY(0);
-}
-
-/* Animation Classes */
-.anim-pop {
-    animation: popEffect 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes popEffect {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.3) rotate(5deg);
-    }
-
-    100% {
-        transform: scale(1);
-    }
+    justify-content: center;
+    align-items: center;
 }

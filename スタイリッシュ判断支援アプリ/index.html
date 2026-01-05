@@ -4,122 +4,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy or Not? - Stylish Decision Support</title>
+    <title>Choice Supporter</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div id="app" class="p5-theme">
-        <!-- Dynamic Background -->
-        <div class="bg-layer"></div>
-        <div class="bg-shape shape-1"></div>
-        <div class="bg-shape shape-2"></div>
-        <div class="bg-shape shape-3"></div>
+    <div id="app">
+        <header class="app-header">
+            <h1>Choice<br>Supporter</h1>
+        </header>
 
-        <main class="main-container">
-            <!-- Screen: Home -->
-            <section id="screen-home" class="screen active">
-                <div class="content-wrapper skew-box">
-                    <div class="header-area">
-                        <h1 class="app-title-top">Choice</h1>
+        <main>
+            <!-- Screen 1: Home -->
+            <section id="screen-home" class="screen">
+                <div class="home-content">
+                    <h2 class="sub-copy">判断をサポートします</h2>
+                    <div class="hero-decoration">
+                        <div class="circle-outer"></div>
+                        <div class="circle-inner"></div>
                     </div>
+                    <button id="btn-start" class="btn btn-primary">判断開始</button>
+                    <!-- "Shopping List" / "Wish List" buttons place holder if needed, 
+                         but strictly following MVP spec, we focus on the decision flow first. -->
+                </div>
+            </section>
 
-                    <div class="header-area-bottom">
-                        <h2 class="app-title-bottom">Supporter</h2>
-                        <p class="app-subtitle">衝動を、確信へ。</p>
-                    </div>
-
-                    <div class="character-area">
-                        <div class="char-wrapper">
-                            <div class="char-shadow"></div>
-                            <div class="char-visual lv1">🐚</div>
+            <!-- Screen 2: Quiz -->
+            <section id="screen-quiz" class="screen hidden">
+                <div class="quiz-header">
+                    <div class="calmness-meter-container">
+                        <span class="label">冷静度</span>
+                        <div class="meter-bar">
+                            <div id="meter-fill" class="meter-fill" style="width: 50%;"></div>
                         </div>
+                        <span id="meter-value" class="value">50</span>
                     </div>
+                    <div class="question-counter">
+                        Q. <span id="current-q">1</span> / <span id="total-q">7</span>
+                    </div>
+                </div>
 
-                    <div class="action-area">
-                        <button id="btn-start" class="btn btn-phantom"><span>判断支援開始</span></button>
+                <div class="character-area">
+                    <div id="character" class="character stage-1">
+                        <!-- CSS Shapes will be here -->
+                        <div class="char-body"></div>
+                        <div class="char-accessory"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-interaction">
+                    <div class="bubble">
+                        <p id="question-text">質問テキストがここに入ります</p>
+                    </div>
+                    <div class="options">
+                        <button id="btn-yes" class="btn btn-option">YES</button>
+                        <button id="btn-no" class="btn btn-option">NO</button>
                     </div>
                 </div>
             </section>
 
-            <!-- Screen: Quiz -->
-            <section id="screen-quiz" class="screen">
-                <div class="content-wrapper skew-box">
-                    <div class="status-bar">
-                        <div class="level-indicator">
-                            <span class="label">Current Lv.</span>
-                            <span id="quiz-level-display" class="value">1</span>
-                        </div>
-                        <div class="progress-indicator">
-                            <span id="quiz-progress">Q1 / 3</span>
+            <!-- Screen 3: Cut-in (Overlay) -->
+            <section id="screen-cutin" class="screen hidden overlay">
+                <div class="cutin-content">
+                    <div class="cutin-text">EVOLUTION!</div>
+                    <div class="cutin-effect"></div>
+                </div>
+            </section>
+
+            <!-- Screen 4: Final -->
+            <section id="screen-final" class="screen hidden">
+                <div class="final-content">
+                    <div class="character-area large">
+                        <div id="character-final" class="character stage-3">
+                            <!-- Cloned/styled via CSS -->
+                            <div class="char-body"></div>
+                            <div class="char-accessory"></div>
                         </div>
                     </div>
-
-                    <div class="character-area small">
-                        <div class="char-wrapper">
-                            <div id="quiz-char-visual" class="char-visual lv1">🐚</div>
-                        </div>
-                    </div>
-
-                    <div class="question-frame">
-                        <div class="question-area">
-                            <h2 id="question-text" class="question-text">質問テキストがここに入ります</h2>
-                        </div>
-                    </div>
-
-                    <div class="action-area vertical">
-                        <button class="btn btn-option" data-answer="yes"><span>はい</span></button>
-                        <button class="btn btn-option" data-answer="no"><span>いいえ</span></button>
-                        <button class="btn btn-option" data-answer="unknown"><span>わからない</span></button>
+                    <h2 class="final-message">判断の時です</h2>
+                    <div class="final-actions">
+                        <button id="btn-buy" class="btn btn-option">買う</button>
+                        <button id="btn-dont-buy" class="btn btn-option">買わない</button>
                     </div>
                 </div>
             </section>
 
-            <!-- Screen: Result -->
-            <section id="screen-result" class="screen">
-                <div class="content-wrapper skew-box">
-                    <div class="header-area">
-                        <h2 class="result-title">Judgment time…</h2>
-                    </div>
-
-                    <div class="character-area">
-                        <div class="char-wrapper">
-                            <div id="result-char-visual" class="char-visual lv1">🐚</div>
-                            <!-- Level badge removed -->
-                        </div>
-                    </div>
-
-                    <div class="message-box">
-                        <div class="message-area">
-                            <p class="result-message-main">それ、<span class="highlight-bracket">[買い]</span>ですかい？</p>
-                        </div>
-                    </div>
-
-                    <div class="action-area">
-                        <div class="btn-group">
-                            <button id="btn-buy" class="btn btn-phantom black"><span>買う</span></button>
-                            <button id="btn-dont-buy" class="btn btn-phantom black"><span>今は買わない</span></button>
-                        </div>
-                        <button id="btn-home" class="btn btn-text"><span>ホームに戻る</span></button>
-                    </div>
+            <!-- Result Overlay (Simple result feedback) -->
+            <section id="screen-result" class="screen hidden overlay">
+                <div class="result-content">
+                    <h2 id="result-text">決断完了</h2>
+                    <br>
+                    <button id="btn-back-home" class="btn btn-primary">ホームへ戻る</button>
                 </div>
             </section>
+
         </main>
-
-        <!-- Cut-in Overlay -->
-        <div id="cutin-overlay" class="cutin-overlay">
-            <div class="cutin-stripes"></div>
-            <div class="cutin-content">
-                <div id="cutin-visual" class="cutin-visual">⚡</div>
-                <h2 id="cutin-text" class="cutin-text">GREAT</h2>
-            </div>
-        </div>
-
-        <!-- Toast Notification -->
-        <div id="toast" class="toast">判断完了</div>
     </div>
     <script src="app.js"></script>
 </body>
